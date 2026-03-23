@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>متابعة أسبوعية</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>📅 جدول المتابعة الأسبوعي</h1>
+
+  <div class="controls">
+    <input type="text" id="nameInput" placeholder="أدخل الاسم">
+    <button onclick="addUser()">إضافة</button>
+    <button onclick="resetChecks()">إعادة تعيين</button>
+  </div>
+
+  <table id="tracker">
+    <thead>
+      <tr>
+        <th>الاسم</th>
+        <th>السبت</th>
+        <th>الأحد</th>
+        <th>الاثنين</th>
+        <th>الثلاثاء</th>
+        <th>الأربعاء</th>
+        <th>الخميس</th>
+        <th>الجمعة</th>
+        <th>حذف</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>
