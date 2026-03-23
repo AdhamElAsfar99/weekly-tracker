@@ -54,6 +54,38 @@ function editName(index) {
   }
 }
 
+async function shareTable() {
+  const table = document.getElementById('tracker');
+  const deleteColumn = table.querySelectorAll('th:last-child, td:last-child');
+  
+  // Hide delete column
+  deleteColumn.forEach(el => el.style.display = 'none');
+  
+  try {
+    // Capture table as image
+    const canvas = await html2canvas(table);
+    
+    canvas.toBlob(blob => {
+      if (navigator.share) {
+        const file = new File([blob], 'tracker.png', { type: 'image/png' });
+        navigator.share({
+          files: [file],
+          title: 'جدول المتابعة الأسبوعي'
+        });
+      } else {
+        alert('ميزة المشاركة غير متاحة على هذا الجهاز');
+      }
+      
+      // Show delete column again
+      deleteColumn.forEach(el => el.style.display = '');
+    });
+  } catch (error) {
+    console.error('خطأ:', error);
+    // Show delete column again in case of error
+    deleteColumn.forEach(el => el.style.display = '');
+  }
+}
+
 function render() {
   const tbody = document.querySelector("#tracker tbody");
   tbody.innerHTML = "";

@@ -97,6 +97,24 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
+/* Share section */
+.share-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.share-btn {
+  background: #2196F3;
+  color: white;
+  padding: 12px 20px;
+  font-size: 16px;
+}
+
+.share-btn:hover {
+  background: #1976D2;
+}
+
 /* Mobile tweaks */
 @media (max-width: 600px) {
   th, td {
