@@ -1,30 +1,51 @@
-<div class="container">
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>متابعة أسبوعية</title>
 
-  <h1>📅 جدول المتابعة الأسبوعي</h1>
+  <!-- Mobile responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <div class="controls">
-    <input type="text" id="nameInput" placeholder="أدخل الاسم">
-    <button onclick="addUser()">إضافة</button>
-    <button onclick="resetChecks()">إعادة تعيين</button>
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>📅 جدول المتابعة الأسبوعي</h1>
+
+    <div class="controls">
+      <input type="text" id="nameInput" placeholder="أدخل الاسم">
+      <button onclick="addUser()">إضافة</button>
+      <button onclick="resetChecks()">إعادة تعيين</button>
+    </div>
+
+    <div class="table-wrapper">
+      <table id="tracker">
+        <thead>
+          <tr>
+            <th>الاسم</th>
+            <th>السبت</th>
+            <th>الأحد</th>
+            <th>الاثنين</th>
+            <th>الثلاثاء</th>
+            <th>الأربعاء</th>
+            <th>الخ-ميس</th>
+            <th>الجمعة</th>
+            <th>حذف</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
   </div>
 
-  <div class="table-wrapper">
-    <table id="tracker">
-      <thead>
-        <tr>
-          <th>الاسم</th>
-          <th>السبت</th>
-          <th>الأحد</th>
-          <th>الاثنين</th>
-          <th>الثلاثاء</th>
-          <th>الأربعاء</th>
-          <th>الخميس</th>
-          <th>الجمعة</th>
-          <th>حذف</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+  <!-- Script -->
+  <script src="script.js"></script>
 
-</div>
+</body>
+</html>
