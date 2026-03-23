@@ -111,10 +111,6 @@ input[type="checkbox"] {
   font-size: 16px;
 }
 
-.share-btn:hover {
-  background: #1976D2;
-}
-
 /* Mobile tweaks */
 @media (max-width: 600px) {
   th, td {
