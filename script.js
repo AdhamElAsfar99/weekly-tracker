@@ -60,7 +60,7 @@ async function shareTable() {
 
   if (!table || !screenshotTitle) return;
 
-  const titleText = screenshotTitle.textContent.trim() || 'جدول المتابعة الأسبوعي';
+  const titleText = screenshotTitle.textContent.trim();
   const tempCapture = document.createElement('div');
   const clonedTable = table.cloneNode(true);
 
