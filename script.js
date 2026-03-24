@@ -57,40 +57,51 @@ function editName(index) {
 async function shareTable() {
   const table = document.getElementById('tracker');
   const screenshotTitle = document.getElementById('screenshotTitle');
-  const deleteColumn = table.querySelectorAll('th:last-child, td:last-child');
 
-  if (!screenshotTitle) return;
-  
-  // Hide delete column before capture.
-  deleteColumn.forEach(el => el.style.display = 'none');
-  
+  if (!table || !screenshotTitle) return;
+
+  const titleText = screenshotTitle.textContent.trim() || 'جدول المتابعة الأسبوعي';
+  const tempCapture = document.createElement('div');
+  const clonedTable = table.cloneNode(true);
+
+  tempCapture.style.position = 'fixed';
+  tempCapture.style.left = '-99999px';
+  tempCapture.style.top = '0';
+  tempCapture.style.background = '#ffffff';
+  tempCapture.style.padding = '0';
+  tempCapture.style.borderRadius = '10px';
+  tempCapture.style.overflow = 'hidden';
+  tempCapture.style.direction = 'rtl';
+  tempCapture.style.width = table.offsetWidth + 'px';
+
+  const titleEl = document.createElement('div');
+  titleEl.textContent = titleText;
+  titleEl.style.textAlign = 'center';
+  titleEl.style.fontFamily = 'Arial, sans-serif';
+  titleEl.style.fontSize = '26px';
+  titleEl.style.fontWeight = '700';
+  titleEl.style.color = '#333333';
+  titleEl.style.padding = '14px 10px 12px';
+  titleEl.style.background = '#ffffff';
+
+  const clonedDeleteColumn = clonedTable.querySelectorAll('th:last-child, td:last-child');
+  clonedDeleteColumn.forEach(el => {
+    el.style.display = 'none';
+  });
+
+  tempCapture.appendChild(titleEl);
+  tempCapture.appendChild(clonedTable);
+  document.body.appendChild(tempCapture);
+
   try {
-    const tableCanvas = await html2canvas(table, { backgroundColor: '#ffffff' });
-
-    // Build a final image with a title area above the table canvas.
-    const titleText = screenshotTitle.textContent.trim() || 'جدول المتابعة الأسبوعي';
-    const titleHeight = 56;
-    const finalCanvas = document.createElement('canvas');
-    finalCanvas.width = tableCanvas.width;
-    finalCanvas.height = tableCanvas.height + titleHeight;
-
-    const ctx = finalCanvas.getContext('2d');
-    if (!ctx) {
-      alert('تعذر إنشاء الصورة');
-      return;
-    }
-
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
-    ctx.fillStyle = '#333333';
-    ctx.font = 'bold 24px Arial';
-    ctx.textAlign = 'center';
-    ctx.direction = 'rtl';
-    ctx.fillText(titleText, finalCanvas.width / 2, 36);
-    ctx.drawImage(tableCanvas, 0, titleHeight);
+    const canvas = await html2canvas(tempCapture, {
+      backgroundColor: '#ffffff',
+      useCORS: true,
+      scale: 2
+    });
 
     const blob = await new Promise(resolve => {
-      finalCanvas.toBlob(resolve, 'image/png');
+      canvas.toBlob(resolve, 'image/png');
     });
 
     if (!blob) {
@@ -112,12 +123,12 @@ async function shareTable() {
 
     await navigator.share({
       files: [file],
-      title: 'جدول المتابعة الأسبوعي'
+      title: titleText
     });
   } catch (error) {
     console.error('خطأ:', error);
   } finally {
-    deleteColumn.forEach(el => el.style.display = '');
+    tempCapture.remove();
   }
 }
 
