@@ -89,6 +89,7 @@ td:first-child {
   cursor: pointer;
   font-weight: bold;
   color: #333;
+  font-size: 18px;
 }
 
 /* Checkbox scaling */
@@ -116,6 +117,10 @@ input[type="checkbox"] {
   th, td {
     padding: 6px;
     font-size: 12px;
+  }
+
+  td:first-child {
+    font-size: 15px;
   }
 
   input {
