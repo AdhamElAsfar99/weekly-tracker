@@ -56,32 +56,48 @@ function editName(index) {
 
 async function shareTable() {
   const table = document.getElementById('tracker');
+  const captureArea = document.getElementById('captureArea');
+  const screenshotTitle = document.getElementById('screenshotTitle');
   const deleteColumn = table.querySelectorAll('th:last-child, td:last-child');
+
+  if (!captureArea || !screenshotTitle) return;
   
-  // Hide delete column
+  // Show screenshot title and hide delete column before capture.
+  screenshotTitle.style.display = 'block';
   deleteColumn.forEach(el => el.style.display = 'none');
   
   try {
-    // Capture table as image
-    const canvas = await html2canvas(table);
-    
-    canvas.toBlob(blob => {
-      if (navigator.share) {
-        const file = new File([blob], 'tracker.png', { type: 'image/png' });
-        navigator.share({
-          files: [file],
-          title: 'جدول المتابعة الأسبوعي'
-        });
-      } else {
-        alert('ميزة المشاركة غير متاحة على هذا الجهاز');
-      }
-      
-      // Show delete column again
-      deleteColumn.forEach(el => el.style.display = '');
+    const canvas = await html2canvas(captureArea);
+
+    const blob = await new Promise(resolve => {
+      canvas.toBlob(resolve, 'image/png');
+    });
+
+    if (!blob) {
+      alert('تعذر إنشاء الصورة');
+      return;
+    }
+
+    if (!navigator.share || !navigator.canShare) {
+      alert('ميزة المشاركة غير متاحة على هذا الجهاز');
+      return;
+    }
+
+    const file = new File([blob], 'tracker.png', { type: 'image/png' });
+
+    if (!navigator.canShare({ files: [file] })) {
+      alert('المشاركة بالملفات غير مدعومة على هذا الجهاز');
+      return;
+    }
+
+    await navigator.share({
+      files: [file],
+      title: 'جدول المتابعة الأسبوعي'
     });
   } catch (error) {
     console.error('خطأ:', error);
-    // Show delete column again in case of error
+  } finally {
+    screenshotTitle.style.display = '';
     deleteColumn.forEach(el => el.style.display = '');
   }
 }

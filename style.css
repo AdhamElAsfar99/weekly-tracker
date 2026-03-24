@@ -64,6 +64,21 @@ button.delete {
   overflow-x: auto;
 }
 
+#captureArea {
+  background: white;
+  border-radius: 10px;
+  padding: 0 0 8px;
+}
+
+.screenshot-title {
+  display: none;
+  margin: 0;
+  padding: 14px 10px 10px;
+  text-align: center;
+  color: #333;
+  font-size: 20px;
+}
+
 /* Table */
 table {
   width: 100%;
