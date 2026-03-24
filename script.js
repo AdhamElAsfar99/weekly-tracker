@@ -56,21 +56,41 @@ function editName(index) {
 
 async function shareTable() {
   const table = document.getElementById('tracker');
-  const captureArea = document.getElementById('captureArea');
   const screenshotTitle = document.getElementById('screenshotTitle');
   const deleteColumn = table.querySelectorAll('th:last-child, td:last-child');
 
-  if (!captureArea || !screenshotTitle) return;
+  if (!screenshotTitle) return;
   
-  // Show screenshot title and hide delete column before capture.
-  screenshotTitle.style.display = 'block';
+  // Hide delete column before capture.
   deleteColumn.forEach(el => el.style.display = 'none');
   
   try {
-    const canvas = await html2canvas(captureArea);
+    const tableCanvas = await html2canvas(table, { backgroundColor: '#ffffff' });
+
+    // Build a final image with a title area above the table canvas.
+    const titleText = screenshotTitle.textContent.trim() || 'جدول المتابعة الأسبوعي';
+    const titleHeight = 56;
+    const finalCanvas = document.createElement('canvas');
+    finalCanvas.width = tableCanvas.width;
+    finalCanvas.height = tableCanvas.height + titleHeight;
+
+    const ctx = finalCanvas.getContext('2d');
+    if (!ctx) {
+      alert('تعذر إنشاء الصورة');
+      return;
+    }
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+    ctx.fillStyle = '#333333';
+    ctx.font = 'bold 24px Arial';
+    ctx.textAlign = 'center';
+    ctx.direction = 'rtl';
+    ctx.fillText(titleText, finalCanvas.width / 2, 36);
+    ctx.drawImage(tableCanvas, 0, titleHeight);
 
     const blob = await new Promise(resolve => {
-      canvas.toBlob(resolve, 'image/png');
+      finalCanvas.toBlob(resolve, 'image/png');
     });
 
     if (!blob) {
@@ -97,7 +117,6 @@ async function shareTable() {
   } catch (error) {
     console.error('خطأ:', error);
   } finally {
-    screenshotTitle.style.display = '';
     deleteColumn.forEach(el => el.style.display = '');
   }
 }
